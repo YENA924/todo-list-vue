@@ -1,7 +1,13 @@
 <template>
   <header>
     <h1>todos</h1>
-    <input class="new-todo" placeholder="What needs to be done?" autofocus v-model="newTodoItem" @keyup.enter="addTodoItem">
+    <input
+      v-model="newTodoItem"
+      @keyup.enter="addTodoItem"
+      class="new-todo"
+      placeholder="What needs to be done?"
+      autofocus
+    />
   </header>
 </template>
 

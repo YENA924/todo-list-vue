@@ -2,8 +2,8 @@
   <div class="todoapp">
     <todo-header></todo-header>
     <div class="main">
-      <todo-list></todo-list>
-      <todo-footer></todo-footer>
+      <todo-list :todoFilter="filter"></todo-list>
+      <todo-footer @todoFilter="todoFilter"></todo-footer>
     </div>
   </div>
 </template>
@@ -19,6 +19,16 @@ export default {
     TodoHeader,
     TodoList,
     TodoFooter
+  },
+  data() {
+	return {
+		filter: 'All'
+	}
+  },
+  methods: {
+	todoFilter (value) {
+		this.filter = value;
+	}
   }
 }
 </script>

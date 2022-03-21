@@ -18,34 +18,32 @@ export const store = new Vuex.Store({
   },
   mutations: {
     addTodoItem(state, payload) {
-      const todoArray = state.todoItems ? state.todoItems : []
       const item = Object.assign({}, {
-        id: payload,
+        id: Math.floor(Math.random() * 1000000001),
         title: payload,
         completed: false
       });
       
-      todoArray.push(item);
-      localStorage.setItem('todos-list-vue2', JSON.stringify(todoArray));
+      state.todoItems.push(item);
+      localStorage.setItem('todos-list-vue2', JSON.stringify(state.todoItems));
     },
     removeTodoItem(state, payload) {
-      state.todoItems.splice(payload.id, 1);
-      const sortTodoItem = state.todoItems.map((todo, idx) => ({...todo, id: idx}));
-      localStorage.setItem('todos-list-vue2', JSON.stringify(sortTodoItem));
+      state.todoItems.splice(state.todoItems.findIndex(todo => todo.id === payload.id), 1);
+      localStorage.setItem('todos-list-vue2', JSON.stringify(state.todoItems));
     },
     completeTodoItem (state, payload) {
       if (!state.todoItems.length) return false
 
+      let sortTodoItem = [];
+      
       if (Array.isArray(payload)) {
-        const sortTodoItem = state.todoItems.map(todo => ({...todo, completed: !todo.completed}));
-        state.todoItems = sortTodoItem
-        localStorage.setItem('todos-list-vue2', JSON.stringify(sortTodoItem));
+        sortTodoItem = state.todoItems.map(todo => ({...todo, completed: state.todoItems.every(todo => todo.completed) ? false : true}));
       } else {
-        const sortTodoItem = state.todoItems.map(todo => ({...todo, completed: payload.id === todo.id ? !todo.completed : todo.completed}));
-        state.todoItems = sortTodoItem
-        localStorage.setItem('todos-list-vue2', JSON.stringify(sortTodoItem));
+        sortTodoItem = state.todoItems.map(todo => ({...todo, completed: payload.id === todo.id ? !todo.completed : todo.completed}));
       }
-      console.log(state, payload);
+      
+      state.todoItems = sortTodoItem
+      localStorage.setItem('todos-list-vue2', JSON.stringify(sortTodoItem));
     },
     clearTodoItem (state) {
       const sortTodoItem = state.todoItems.filter(todo => !todo.completed);
