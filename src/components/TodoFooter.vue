@@ -34,10 +34,12 @@ export default {
   },
   methods: {
     selectButton (item) {
+      // 필터링 시 부모 컴포넌트에 이벤트 emit
       this.footerSelectedItem = item;
       this.$emit('todoFilter', item);
     },
     clearTodoItem () {
+      // 완료된 todo 삭제
       this.$store.commit('clearTodoItem');
     }
   }

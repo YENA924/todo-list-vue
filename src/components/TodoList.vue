@@ -35,14 +35,17 @@ export default {
       return this.$store.getters.todoItems
     },
     computedTodoItems () {
+      // props로 받아 todo item 필터링 (all, active, completed)
       return this.$store.getters.todoItems.filter(todo => this.todoFilter === 'active' ? !todo.completed : this.todoFilter === 'completed' ? todo.completed : todo)
     }
   },
   methods: {
     removeTodoItem (item) {
+      // todo item 삭제
       this.$store.commit('removeTodoItem', item)
     },
     completeTodoItems (item) {
+      // todo item 완료 체크
       this.$store.commit('completeTodoItem', item)
     }
   },
