@@ -19,12 +19,6 @@ export default {
       newTodoItem: ''
     }
   },
-  computed: {
-    todoItems () {
-      // store에서 getters를 사용해 todoItems를 가져옴
-      return this.$store.getters.todoItems
-    }
-  },
   methods: {
     addTodoItem () {
       // 로컬스토리지에 todo item 추가
