@@ -1,23 +1,34 @@
 <template>
-  <div>
-    <input id="toggle-all" class="toggle-all" type="checkbox" />
-    <label for="toggle-all" @click="completeTodoItems(todoItems)">Mark all as complete</label>
-    <ul class="todo-list">
+  <div class="todo__contents">
+    <input
+      id="todo__toggle--all"
+      class="todo__toggle--all"
+      type="checkbox" 
+    />
+    <label
+      for="toggle--all"
+      :class="!!computedTodoItems.length ? '' : 'hidden'"
+      @click="completeTodoItems(todoItems)"
+    >
+      Mark all as complete
+    </label>
+    <ul class="todo__list">
       <li
         v-for="todoItem in computedTodoItems"
         :key="todoItem.id"
-        :class="todoItem.completed ? 'completed' : ''"
+        :class="todoItem.completed ? '--completed' : ''"
         >
-        <div class="view">
+        <div class="todo__item">
           <input 
-            :id="`toggle-${todoItem.id}`"
-            class="toggle" type="checkbox"
+            class="todo__toggle"
+            type="checkbox"
+            :id="`todo__toggle--${todoItem.id}`"
             :value="todoItem.completed"
             :checked="todoItem.completed"
             @change="completeTodoItems(todoItem)"
           />
-          <label :for="`toggle-${todoItem.id}`">{{ todoItem.title }}</label>
-          <button class="destroy" @click="removeTodoItem(todoItem)"></button>
+          <label :for="`todo__toggle--${todoItem.id}`">{{ todoItem.title }}</label>
+          <button class="todo__remove" @click="removeTodoItem(todoItem)"></button>
         </div>
       </li>
     </ul>
@@ -26,7 +37,7 @@
 
 <script>
 export default {
-  name: 'TodoList',
+  name: 'TodoContents',
   props: {
     todoFilter: String
   },
@@ -42,13 +53,12 @@ export default {
   methods: {
     removeTodoItem (item) {
       // todo item 삭제
-      this.$store.commit('removeTodoItem', item)
+      this.$store.commit('removeTodoItem', item);
     },
     completeTodoItems (item) {
       // todo item 완료 체크
-      this.$store.commit('completeTodoItem', item)
+      this.$store.commit('completeTodoItem', item);
     }
   },
 }
 </script>
-

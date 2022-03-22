@@ -38,7 +38,7 @@ export const store = new Vuex.Store({
     },
     completeTodoItem (state, payload) {
       // todo 완료 체크시 실행되는 로직
-      if (!state.todoItems.length) return false
+      if (!state.todoItems.length) return false;
 
       let sortTodoItem = [];
       
@@ -48,7 +48,7 @@ export const store = new Vuex.Store({
         sortTodoItem = state.todoItems.map(todo => ({...todo, completed: payload.id === todo.id ? !todo.completed : todo.completed}));
       }
       
-      state.todoItems = sortTodoItem
+      state.todoItems = sortTodoItem;
       localStorage.setItem('todos-list-vue2', JSON.stringify(sortTodoItem));
     },
     clearTodoItem (state) {

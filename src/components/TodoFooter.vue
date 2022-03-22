@@ -1,19 +1,25 @@
 <template>
-  <footer class="footer">
-    <span class="todo-count">{{ todoItems.length }} item left</span>
-    <ul class="filters">
+  <footer class="todo__footer">
+    <span class="footer__count">{{ todoItems.length }} item left</span>
+    <ul class="footer__filters">
       <li
         v-for="(buttonItem, index) in footerButtonItems" 
         :key="index"
       >
-        <a @click="selectButton(buttonItem)" :class="footerSelectedItem === buttonItem ? 'selected' : ''">{{ buttonItem }}</a>
+        <a
+          @click="selectButton(buttonItem)"
+          :class="footerSelectedItem === buttonItem ? 'selected' : ''"
+        >
+          {{ buttonItem }}
+        </a>
       </li>
     </ul>
     <button
-      class="clear-completed"
+      class="footer__clear--completed"
       v-if="$store.getters.isAllCompleted"
       @click="clearTodoItem"
-    >Clear completed
+    >
+      Clear completed
     </button>
   </footer>
 </template>
