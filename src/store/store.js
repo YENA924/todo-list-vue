@@ -1,10 +1,7 @@
 
-import Vue from 'vue'
-import Vuex from 'vuex'
- 
-Vue.use(Vuex);
- 
-export const store = new Vuex.Store({
+import { createStore } from 'vuex'
+
+export const store = createStore({
   state: {
     todoItems: JSON.parse(localStorage.getItem('todos-list-vue2')) || []
   },
