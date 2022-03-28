@@ -1,8 +1,8 @@
 <template>
   <div class="todo__app">
-    <todo-header></todo-header>
-		<todo-contents :todoFilter="filter"></todo-contents>
-		<todo-footer @todoFilter="todoFilter"></todo-footer>
+    <todo-header />
+    <todo-contents :todo-filter="filter" />
+    <todo-footer @todo-filter="todoFilter" />
   </div>
 </template>
 
@@ -20,7 +20,7 @@ export default {
   },
   data() {
 		return {
-			filter: 'All'
+			filter: { index: 0, title: 'All' }
 		}
   },
   methods: {

@@ -8,9 +8,6 @@ export const store = createStore({
   getters: {
     todoItems: state => {
       return state.todoItems
-    },
-    isAllCompleted: state => {
-      return state.todoItems.some(todo => todo.completed)
     }
   },
   mutations: {
@@ -20,7 +17,7 @@ export const store = createStore({
       const item = Object.assign({}, {
         id: Math.floor(Math.random() * 1000000001),
         title: payload,
-        completed: false
+        state: 'active'
       });
       
       state.todoItems.push(item);
@@ -39,10 +36,11 @@ export const store = createStore({
 
       let sortTodoItem = [];
       
+      console.log(payload, Array.isArray(payload));
       if (Array.isArray(payload)) { // 전체 todo 완료 true/false
-        sortTodoItem = state.todoItems.map(todo => ({...todo, completed: state.todoItems.every(todo => todo.completed) ? false : true}));
+        sortTodoItem = state.todoItems.map(todo => ({...todo, state: state.todoItems.every(todo => todo.state === 'completed') ? 'active' : 'completed'}));
       } else { // 단일 todo 완료 true/false
-        sortTodoItem = state.todoItems.map(todo => ({...todo, completed: payload.id === todo.id ? !todo.completed : todo.completed}));
+        sortTodoItem = state.todoItems.map(todo => ({...todo, state: payload.id === todo.id ? todo.state === 'active' ? 'completed' : 'active' : todo.state}));
       }
       
       state.todoItems = sortTodoItem;
@@ -51,9 +49,9 @@ export const store = createStore({
     clearTodoItem (state) {
       // 완료한 todo만 삭제시 실행되는 로직
       // 완료된 todo 필터링
-      const sortTodoItem = state.todoItems.filter(todo => !todo.completed);
+      const sortTodoItem = state.todoItems.filter(todo => todo.state !== 'completed');
       state.todoItems = sortTodoItem;
-      localStorage.setItem('todos-list-vue2', sortTodoItem);
+      localStorage.setItem('todos-list-vue2', JSON.stringify(state.todoItems));
     }
   }
 });

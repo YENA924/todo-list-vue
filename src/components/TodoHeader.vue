@@ -2,29 +2,36 @@
   <header class="todo__header">
     <h1>todos</h1>
     <input
-      v-model="newTodoItem"
-      @keyup.enter="addTodoItem"
+      v-model="data.newTodoItem"
       class="header__input--new"
       placeholder="What needs to be done?"
       autofocus
-    />
+      @keyup.enter="addTodoItem"
+    >
   </header>
 </template>
 
 <script>
+import { reactive } from 'vue'
+import { useStore } from 'vuex'
+
 export default {
   name: 'TodoHeader',
-  data() {
-    return {
-      newTodoItem: ''
+  setup () {
+    const store = useStore()
+    // data
+    // 새로운 todo 아이템
+    const data = reactive({ newTodoItem: '' })
+
+    // todo 추가
+    const addTodoItem = () => {
+      store.commit('addTodoItem', data.newTodoItem);
+      data.newTodoItem = ''
     }
-  },
-  methods: {
-    addTodoItem () {
-      // 로컬스토리지에 todo item 추가
-      this.$store.commit('addTodoItem', this.newTodoItem);
-      // 입력한 todo item 초기화
-      this.newTodoItem = '';
+    
+    return {
+      data,
+      addTodoItem
     }
   }
 }
