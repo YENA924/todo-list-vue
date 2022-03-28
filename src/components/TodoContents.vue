@@ -4,6 +4,7 @@
       id="todo__toggle--all"
       class="todo__toggle--all"
       type="checkbox" 
+      :checked="isAllCompletedTodo"
     >
     <label
       for="toggle--all"
@@ -53,9 +54,11 @@ export default {
     const store = useStore()
 
     const todoItems = computed(() => store.getters.todoItems)
+    // todo 전부 완료시
+    const isAllCompletedTodo = computed(() => todoItems.value.every(todo => todo.state === 'completed'))
     // 필터링한 todo 리스트
     const filterTodoItems = computed(() => {
-      return store.getters.todoItems.filter(todo => props.todoFilter.title === 'All' ? todo : props.todoFilter.title === todo.state)
+      return todoItems.value.filter(todo => props.todoFilter.title === 'All' ? todo : props.todoFilter.title === todo.state)
     })
     
     // todo 삭제
@@ -65,6 +68,7 @@ export default {
     
     return {
       todoItems,
+      isAllCompletedTodo,
       filterTodoItems,
       removeTodoItem,
       completeTodoItem

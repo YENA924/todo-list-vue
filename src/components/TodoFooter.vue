@@ -1,13 +1,13 @@
 <template>
   <footer class="todo__footer">
-    <span class="footer__count">{{ todoItems.length }} item left</span>
+    <span class="footer__count">{{ activeItems.length }} item left</span>
     <ul class="footer__filters">
       <li
-        v-for="(buttonItem, index) in footerButtonItems" 
+        v-for="(buttonItem, index) in data.footerButtonItems" 
         :key="index"
       >
         <a
-          :class="footerSelectedItem.title === buttonItem.title ? 'selected' : ''"
+          :class="data.footerSelectedItem.title === buttonItem.title ? 'selected' : ''"
           @click="selectFilterButton(buttonItem)"
         >
           {{ buttonItem.title }}
@@ -25,51 +25,55 @@
 </template>
 
 <script>
-import { computed, ref } from 'vue'
+import { computed, reactive } from 'vue'
 import { useStore } from 'vuex'
 
 export default {
   name: 'TodoFooter',
-  setup () {
+  setup (props, context) {
     const store = useStore() // vuex store
-    // 필터링 아이템 배열
-    const footerButtonItems = [
-      {
+    // 선택한 필터링 아이템
+    const data = reactive({
+      footerButtonItems: [
+        {
         index: 0,
         title: 'All'
-      },
-      {
-        index: 1,
-        title: 'active'
-      },
-      {
-        index: 2,
-        title: 'completed'
-      }
-    ]
-    // 선택한 필터링 아이템
-    const footerSelectedItem = ref(footerButtonItems[0])
+        },
+        {
+          index: 1,
+          title: 'active'
+        },
+        {
+          index: 2,
+          title: 'completed'
+        } 
+      ],
+      footerSelectedItem: { index: 0, title: 'All' }
+    })
 
-    // 로컬 스토리지에서 가져온 todo 아이템들
+    // 로컬 스토리지의 todo 아이템들
     const todoItems = computed(() => store.getters.todoItems)
     // todo를 모두 완료했는지 체크
-    const isCompleted = computed(() => store.getters.todoItems.some(todo => todo.state === 'completed'))
+    const isCompleted = computed(() => todoItems.value.some(todo => todo.state === 'completed'))
+    
+    // 완료하지 못한 todo 리스트
+    const activeItems = computed(() => todoItems.value.filter(todo => todo.state === 'active'))
+    
+    // 필터링 시 부모 컴포넌트에 이벤트 emit
+    const selectFilterButton = (item) => {
+      data.footerSelectedItem = item
+      context.emit('todoFilter', item)
+    }
     // 완료한 todo 삭제
     const clearTodoItem = () => store.commit('clearTodoItem')
 
     return {
-      footerSelectedItem,
-      footerButtonItems,
+      data,
       todoItems,
       isCompleted,
+      activeItems,
+      selectFilterButton,
       clearTodoItem
-    }
-  },
-  methods: {
-    selectFilterButton (item) {
-      // 필터링 시 부모 컴포넌트에 이벤트 emit
-      this.footerSelectedItem = item;
-      this.$emit('todoFilter', item);
     }
   }
 }
