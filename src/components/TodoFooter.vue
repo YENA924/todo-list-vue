@@ -36,8 +36,8 @@ export default {
     const data = reactive({
       footerButtonItems: [
         {
-        index: 0,
-        title: 'All'
+          index: 0,
+          title: 'All'
         },
         {
           index: 1,
@@ -55,7 +55,6 @@ export default {
     const todoItems = computed(() => store.getters.todoItems)
     // todo를 모두 완료했는지 체크
     const isCompleted = computed(() => todoItems.value.some(todo => todo.state === 'completed'))
-    
     // 완료하지 못한 todo 리스트
     const activeItems = computed(() => todoItems.value.filter(todo => todo.state === 'active'))
     
